@@ -20,9 +20,9 @@ if mode == 0:
 
         # Вариант со вводом матриц руками
         for i in range(size):
-            ipt = f.readline().split()
-            matrix.append(list(map(float, ipt[:-1])))
-            bVector.append(float(ipt[-1]))
+            ipt = f.readline()
+            matrix.append(list(map(float, ipt.split()[:-1])))
+            bVector.append(float(ipt.split()[-1]))
 else:
     size = int(input())
 
@@ -34,9 +34,9 @@ else:
 
     # Вариант со вводом матриц руками
     for i in range(size):
-        ipt = input().split()
-        matrix.append(list(map(float, ipt[:-1])))
-        bVector.append(float(ipt[-1]))
+        ipt = input()
+        matrix.append(list(map(float, ipt.split()[:-1])))
+        bVector.append(float(ipt.split()[-1]))
 
 # Прямой ход
 for i in range(0, size):
@@ -50,6 +50,11 @@ for i in range(0, size):
                 bVector[j], bVector[i] = bVector[i], bVector[j]
                 break
     if b == 1:
+        # Да, это вся разница тамщето
+        for j in range(i + 1, size):
+            if math.fabs(matrix[j][i]) > math.fabs(matrix[i][i]):
+                matrix[j], matrix[i] = matrix[i], matrix[j]
+                bVector[i], bVector[j] = bVector[j], bVector[i]
         for j in range(i + 1, size):
             mn = matrix[j][i] / matrix[i][i]
             for k in range(i, size):
@@ -71,7 +76,7 @@ for i in range(size - 1, 0 - 1, -1):
 
 # Вывод матрицы в соответсвии с режимом работы
 if mode == 0:
-    with open("output.txt.txt", "w") as f:
-        f.write("\n".join(map(str, xVector)))
+    with open("output.txt", "w") as f:
+        f.write("\n".join("x{} = {}".format(n, str(i)) for n, i in enumerate(xVector, start=1)))
 else:
-    print("\n".join(map(str, xVector)))
+    print("\n".join("x{} = {}".format(n, str(i)) for n, i in enumerate(xVector, start=1)))
