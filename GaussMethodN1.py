@@ -72,6 +72,7 @@ for i in range(size - 1, 0 - 1, -1):
 # Вывод матрицы в соответсвии с режимом работы
 if mode == 0:
     with open("output.txt.txt", "w") as f:
-        f.write("\n".join(map(str, xVector)))
+        # Сейчас пойдет очень страшный код, но все ради нумерации иксов
+        f.write("\n".join("x{} = {}".format(n, str(i)) for n, i in enumerate(xVector, start=1)))
 else:
     print("\n".join(map(str, xVector)))
