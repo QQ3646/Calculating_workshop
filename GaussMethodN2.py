@@ -1,3 +1,8 @@
+from matrixInput import matrix_input
+import math  # Для различных математических констант/простейших функций
+# Использовано math.abs() - модуль
+
+
 def gauss_method(size, cmatrix, bVector):
     matrix = [0] * size
     for i in range(size):
@@ -41,9 +46,6 @@ def gauss_method(size, cmatrix, bVector):
     return xVector, s
 
 
-import math  # Для различных математических констант/простейших функций
-# Использовано math.abs() - модуль
-
 # Чтобы отсекать очень маленькие значения, абсолютно близкие к нулю
 epsilon = 1e-10
 
@@ -51,39 +53,9 @@ mode = int(input())
 # 0 для считывания с файла input.txt и вывод в файл output.txt
 # 1 для считывания и вывода в консоль
 
-size = 0
 matrix = []
 bVector = []
-
-if mode == 0:
-    with open("input.txt", "r") as f:
-        size = int(f.readline())
-
-        # Вариант, использующий задание формулой
-        # for i in range(size):
-        #     matrix.append([0] * size)
-        #     for j in range(size):
-        #         matrix[i][j] = ?
-
-        # Вариант со вводом матриц руками
-        for i in range(size):
-            ipt = f.readline()
-            matrix.append(list(map(float, ipt.split()[:-1])))
-            bVector.append(float(ipt.split()[-1]))
-else:
-    size = int(input())
-
-    # Вариант, использующий задание формулой
-    # for i in range(size):
-    #     matrix.append([0] * size)
-    #     for j in range(size):
-    #         matrix[i][j] = ?
-
-    # Вариант со вводом матриц руками
-    for i in range(size):
-        ipt = input()
-        matrix.append(list(map(float, ipt.split()[:-1])))
-        bVector.append(float(ipt.split()[-1]))
+size = matrix_input(matrix, bVector, mode)
 
 xVector, s = gauss_method(size, matrix, bVector)
 
