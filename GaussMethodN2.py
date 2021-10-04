@@ -1,6 +1,17 @@
-from matrixInput import matrix_input
+from someStuff.someMethods import matrix_input
 import math  # Для различных математических констант/простейших функций
 # Использовано math.abs() - модуль
+
+def matrixProd(size, amatrix, bmatrix):
+    cpy = []
+    for i in range(size):
+        cpy.append([0] * size)
+        for j in range(size):
+            tempSum = 0
+            for k in range(size):
+                tempSum += amatrix[i][k] * bmatrix[k][j]
+            cpy[i][j] = tempSum
+    return cpy
 
 
 def gauss_method(size, cmatrix, bVector):
@@ -46,50 +57,60 @@ def gauss_method(size, cmatrix, bVector):
     return xVector, s
 
 
-# Чтобы отсекать очень маленькие значения, абсолютно близкие к нулю
-epsilon = 1e-10
+if __name__ == "__main__":
+    # Чтобы отсекать очень маленькие значения, абсолютно близкие к нулю
+    epsilon = 1e-10
 
-mode = int(input())
-# 0 для считывания с файла input.txt и вывод в файл output.txt
-# 1 для считывания и вывода в консоль
+    mode = int(input())
+    # 0 для считывания с файла input.txt и вывод в файл output.txt
+    # 1 для считывания и вывода в консоль
 
-matrix = []
-bVector = []
-size = matrix_input(matrix, bVector, mode)
+    matrix = []
+    bVector = []
+    size = matrix_input(matrix, bVector, mode)
+    cpy = [0] * size
+    for i in range(size):
+        cpy[i] = matrix[i][:]
+    xVector, s = gauss_method(size, cpy, bVector)
 
-xVector, s = gauss_method(size, matrix, bVector)
+    # Нахождение определителя
+    det = 1
+    for i in range(size):
+        det *= cpy[i][i] * math.pow(-1, s)
 
-# Нахождение определителя
-det = 1
-for i in range(size):
-    det *= matrix[i][i] * math.pow(-1, s)
+    # Вычисление обратной матрицы
+    reverseMatrix = []
+    for i in range(size):
+        e = [0] * size
+        e[i] = 1
+        for i in range(size):
+            cpy[i] = matrix[i][:]
+        revVector, _ = gauss_method(size, cpy, e)
+        reverseMatrix.append(revVector)
 
-# Вычисление обратной матрицы            
-reverseMatrix = [0] * size
-for i in range(size):
-    e = [0] * size
-    e[i] = 1
-    revVector, _ = gauss_method(size, matrix, e)
-    reverseMatrix[i] = revVector
+    e = matrixProd(size, matrix, reverseMatrix)
 
+    # Вывод матрицы в соответсвии с режимом работы
+    if mode == 0:
+        with open("output.txt", "w") as f:
+            # Сейчас пойдет очень страшный код, но все ради нумерации иксов
+            f.write("\n".join("x{} = {}".format(n, str(i if math.fabs(i) > epsilon else 0)) for n, i in enumerate(xVector, start=1)))
+            f.write("\ndeterminant = {:.3}\n".format(det))
+            f.write("A^-1 = \n")
+            for i in range(0, size):
+                for j in range(0, size):
+                    f.write(str(list(reverseMatrix)[j][i] if math.fabs(list(reverseMatrix)[j][i]) > epsilon else 0) + " ")
+                f.write("\n")
+            for i in range(0, size):
+                for j in range(0, size):
+                    f.write(str(list(e)[i][j] if math.fabs(list(e)[i][j]) > epsilon else 0) + " ")
+                f.write("\n")
 
-# Вывод матрицы в соответсвии с режимом работы
-if mode == 0:
-    with open("output.txt", "w") as f:
-        # Сейчас пойдет очень страшный код, но все ради нумерации иксов
-        f.write("\n".join("x{} = {}".format(n, str(i if math.fabs(i) > epsilon else 0)) for n, i in enumerate(xVector, start=1)))
-        f.write("\ndeterminant = {:.3f}".format(det))
-        f.write("A^-1 = \n")
+    else:
+        print("\n".join("x{} = {}".format(n, str(i if math.fabs(i) > epsilon else 0)) for n, i in enumerate(xVector, start=1)))
+        print("determinant = {:.3f}".format(det))
+        print("A^-1 = ")
         for i in range(0, size):
             for j in range(0, size):
-                f.write(str(list(reverseMatrix)[j][i] if math.fabs(list(reverseMatrix)[j][i]) > epsilon else 0) + " ")
-            f.write("\n")
-
-else:
-    print("\n".join("x{} = {}".format(n, str(i if math.fabs(i) > epsilon else 0)) for n, i in enumerate(xVector, start=1)))
-    print("determinant = {:.3f}".format(det))
-    print("A^-1 = ")
-    for i in range(0, size):
-        for j in range(0, size):
-            print(str(list(reverseMatrix)[j][i] if math.fabs(list(reverseMatrix)[j][i]) > epsilon else 0), end = " ")
-        print("")
+                print(str(list(reverseMatrix)[j][i] if math.fabs(list(reverseMatrix)[j][i]) > epsilon else 0), end = " ")
+            print("")
