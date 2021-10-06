@@ -49,6 +49,4 @@ transposition(lm)
 
 xVector, _ = gauss_method(size, lm, yVector)
 
-
-
 print("\n".join(map(str, xVector)))
