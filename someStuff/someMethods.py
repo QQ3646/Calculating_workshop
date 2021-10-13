@@ -1,16 +1,18 @@
 # Вспомогательный файл, где есть только ввод матриц
 # Всегда можно скопировать в основной файл, но я сделаю так, чтобы не повторять код
-import math
+import math, os
 
 
 def matrix_input(matrix, bVector, mode, num=0):  # Где num = 1 - это вместе с погрешностью
     # Копировать отсюдова, добавив, что size = 0 выше
     if mode == 0:
-        with open("../input.txt", "r") as f:
-            size = int(f.readline())
-            if num == 1:  # Убрать проверку на погрешность с 5 по 7 задачу
-                fault = float(f.readline())
-
+        with open(os.getcwd() + "/input.txt", "r") as f:
+            if num == 1:
+                temp = f.readline().split()
+                size = int(temp[0])
+                fault = float(temp[1])
+            else:
+                size = int(f.readline())
             # Вариант, использующий задание формулой
             # for i in range(size):
             #     matrix.append([0] * size)
