@@ -29,15 +29,14 @@ def CLmulti(a):
     return b
 
 
-def matrixProd(size, amatrix, bmatrix):
+def MatrixProd(matrix1, matrix2):
     cpy = []
-    for i in range(size):
-        cpy.append([0] * size)
-        for j in range(size):
-            tempSum = 0
-            for k in range(size):
-                tempSum += amatrix[i][k] * bmatrix[k][j]
-            cpy[i][j] = tempSum
+    for i in range(len(matrix1)):
+        cpy.append([0] * len(matrix2[i]))
+        for j in range(len(matrix2[i])):
+            cpy[i][j] = sum(matrix1[i][n] * matrix2[n][j] for n in range(len(matrix2)))
+            if abs(cpy[i][j]) < 10e-7:
+                cpy[i][j] = 0
     return cpy
 
 
@@ -59,7 +58,7 @@ matrix = []
 bVector = []
 size = matrix_input(matrix, bVector, mode)
 # for j in range(size):
-for k in range(size):
+for k in range(size - 1):
     h = 0
     n = 0
     nw = 0
@@ -84,7 +83,7 @@ for k in range(size):
         e[s] = 1
         for t in range(size):
             h[s][t] = e[t] - 2 * h[s][t]
-    matrix = matrixProd(size, h, matrix)
+    matrix = MatrixProd(h, matrix)
     bVector = MCmulti(h, bVector)
 
 xVector, _ = gauss_method(size, matrix, bVector)

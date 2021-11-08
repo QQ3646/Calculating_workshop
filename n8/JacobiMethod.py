@@ -38,7 +38,9 @@ def rotation(matrix):
     for i in range(size):
         for j in range(i):
             if abs(matrix[i][j]) > maxO:
+            # if matrix[i][j] > maxO:
                 maxO = abs(matrix[i][j])
+                # max0 = matrix[i][j]
                 p, q = i, j
                 eq = False
                 if Decimal(matrix[p][p]).quantize(Decimal("1.000000")).compare(
