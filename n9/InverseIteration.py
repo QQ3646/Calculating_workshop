@@ -3,12 +3,15 @@ from someStuff.someMethods import matrix_input, gauss_method
 from random import randint
 from QR import qralg
 
+def norm(v):
+    return max(abs(v[i]) for i in range(len(v)))
+
 
 def normalize(v):
     v1 = v[:]
-    norm = (sum(v1[i] ** 2 for i in range(len(v1)))) ** 0.5
+    norma = (sum(v[i] ** 2 for i in range(len(v)))) ** 0.5
     for i in range(len(v1)):
-        v1[i] /= norm
+        v1[i] /= norma
     return v1
 
 
@@ -57,6 +60,8 @@ matrix = []
 bVector = []
 size = matrix_input(matrix, bVector, mode)
 
+eps = 10e-6
+
 countOfIter = 10
 
 # currVector = list([randint(-100, 100)] for _ in range(size))
@@ -67,9 +72,13 @@ sigma = qralg(matrix, size)
 finalVect = []
 # sigma = [-7.87279]
 for i in sigma:
-    for j in range(2):
+    while True:
         currVector, _ = gauss_method(size, MatrixMinusMatrix(matrix, MatrixScalarMulti(makeEMatrix(size), i)), prevVector)
-        prevVector = normalize(currVector)
+        currVector = normalize(currVector)
+        if abs(norm(currVector) - norm(prevVector)) < eps:
+            prevVector = normalize(currVector)
+            break
+        prevVector = currVector[:]
     finalVect.append(prevVector)
 for i in range(len(sigma)):
     cpyCurr = [[finalVect[i][j]] for j in range(size)]

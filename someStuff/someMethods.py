@@ -52,12 +52,13 @@ def matrix_input(matrix, bVector, mode, num=0):  # Где num = 1 - это вм�
     return size
 
 
-def gauss_method(size, cmatrix, bVector):
+def gauss_method(size, cmatrix, bVector1):
     matrix = [0] * size
     for i in range(size):
         matrix[i] = cmatrix[i][:]  # Делаем копию матрицы для того, чтобы не "испортить" основную
     s = 0  # Количество перестановок (для детерминанта)
     # Прямой ход
+    bVector = bVector1[:]
     for i in range(0, size):
         b = 1  # Проверка на то, есть ли ненулевой элемент в a[i, i] или есть ли замена этому нулевому элементу
         if matrix[i][i] == 0:
