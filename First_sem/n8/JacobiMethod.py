@@ -43,8 +43,8 @@ def rotation(matrix):
                 # max0 = matrix[i][j]
                 p, q = i, j
                 eq = False
-                if Decimal(matrix[p][p]).quantize(Decimal("1.000000")).compare(
-                        Decimal(matrix[q][q]).quantize(Decimal("1.000000"))) == Decimal('0'):
+                if Decimal(matrix[p][p]).quantize(Decimal("1.000000000")).compare(
+                        Decimal(matrix[q][q]).quantize(Decimal("1.000000000"))) == Decimal('0'):
                     eq = True
             elif abs(matrix[i][j]) == maxO and not eq and matrix[i][i] == matrix[j][j]:
                 p, q = i, j

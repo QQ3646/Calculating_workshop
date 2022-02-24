@@ -1,10 +1,11 @@
 # Если |sigma1| > |sigma2| >= |sigma3| >= ... >= |sigmaM|
 #            !  >  !
 
-import math  # Для различных математических констант/простейших функций
-from someStuff.someMethods import matrix_input, gauss_method
-from decimal import *
-from random import randint
+from First_sem.someStuff.someMethods import matrix_input
+
+
+def norm(v):
+    return max(abs(v[i][0]) for i in range(len(v)))
 
 def normalize(v):
     v1 = v[:]
@@ -26,6 +27,8 @@ def scalar(v1, v2):
     return sum(v1[i][0] * v2[i][0] for i in range(len(v1)))
 
 
+eps = 10e-10
+
 mode = 0
 # 0 для считывания с файла input.txt и вывод в файл output.txt
 # 1 для считывания и вывода в консоль
@@ -34,16 +37,23 @@ matrix = []
 bVector = []
 size = matrix_input(matrix, bVector, mode)
 
-countOfIter = 10
-
 # currVector = list([randint(-100, 100)] for _ in range(size))
-currVector = [[1], [0], [0]]
+currVector = []
+for i in range(size):
+    currVector.append([1])
 sigma1 = 0
 prevVector = currVector[:]
-for i in range(countOfIter):
+counter = 0
+while True:
     currVector = MatrixMulti(matrix, prevVector)
+    counter += 1
     sigma1 = scalar(currVector, prevVector) / scalar(prevVector, prevVector)
+    currVector = normalize(currVector)
+    if abs(norm(currVector) - norm(prevVector)) < eps:
+        prevVector = normalize(currVector)
+        break
     prevVector = normalize(currVector)
 print(sigma1, "\n" + "\n".join(str(currVector[i][0]) for i in range(size)))
 check = MatrixMulti(matrix, currVector)
 print("\n" + "\n".join(str(check[i][0]) + f" / {sigma1} = {check[i][0] / sigma1}" for i in range(size)))
+print(counter)

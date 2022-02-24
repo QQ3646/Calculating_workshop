@@ -8,8 +8,8 @@ def matrix_input(matrix, bVector, mode, num=0):  # Где num = 1 - это вм�
     if mode == 0:
         with open(os.getcwd() + "/input.txt", "r") as f:
             if num == 1:
-                temp = list(map(int, f.readline().split()))
-                size = temp[0]
+                temp = list(map(float, f.readline().split()))
+                size = int(temp[0])
                 fault = temp[1]
             else:
                 size = int(f.readline())
@@ -17,7 +17,7 @@ def matrix_input(matrix, bVector, mode, num=0):  # Где num = 1 - это вм�
             # for i in range(size):
             #     matrix.append([0] * size)
             #     for j in range(size):
-            #         matrix[i][j] = math.pi**((-0.001)*(i-j)**2)
+            #         matrix[i][j] = math.e**(-0.01*((i-j)**2))
             #     bVector.append(float(1))
 
             # Вариант со вводом матриц руками

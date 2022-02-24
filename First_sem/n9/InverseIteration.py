@@ -1,6 +1,4 @@
-import math  # Для различных математических констант/простейших функций
-from someStuff.someMethods import matrix_input, gauss_method
-from random import randint
+from First_sem.someStuff.someMethods import matrix_input, gauss_method
 from QR import qralg
 
 def norm(v):
@@ -60,21 +58,23 @@ matrix = []
 bVector = []
 size = matrix_input(matrix, bVector, mode)
 
-eps = 10e-6
+eps = 10e-3
 
 countOfIter = 10
 
 # currVector = list([randint(-100, 100)] for _ in range(size))
-currVector = [1, 1, 1]
+currVector = [1] * size
 prevVector = currVector[:]
 
 sigma = qralg(matrix, size)
 finalVect = []
 # sigma = [-7.87279]
-for i in sigma:
+couter = [0] * len(sigma)
+for n, i in enumerate(sigma):
     while True:
         currVector, _ = gauss_method(size, MatrixMinusMatrix(matrix, MatrixScalarMulti(makeEMatrix(size), i)), prevVector)
         currVector = normalize(currVector)
+        couter[n] += 1
         if abs(norm(currVector) - norm(prevVector)) < eps:
             prevVector = normalize(currVector)
             break
@@ -85,3 +85,4 @@ for i in range(len(sigma)):
     check = MatrixMulti(matrix, cpyCurr)
     print(f"lambda {i + 1} = {sigma[i]}\n" + "\n".join(str(finalVect[i][j]) for j in range(size)))
     print("\ncheck:\n" + "\n".join(str(check[j][0]) + f" / {sigma[i]} = {check[j][0] / sigma[i]}" for j in range(size)))
+    print(couter[i])

@@ -1,5 +1,4 @@
-import math  # Для различных математических констант/простейших функций
-from someStuff.someMethods import matrix_input, gauss_method
+from First_sem.someStuff.someMethods import matrix_input
 
 
 def seidel(A, b, eps):

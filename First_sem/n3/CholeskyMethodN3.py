@@ -1,8 +1,6 @@
 # Алгоритм на вход требует симметрическую положительно-определенную матрицу на вход!
 
 import math  # Для различных математических констант/простейших функций
-from someStuff.someMethods import matrix_input, gauss_method
-
 
 def transposition(matrix):
     for i in range(size):
@@ -22,14 +20,21 @@ def sigmaJI(end, matrix, n):
         sig_res += matrix[end][i]*matrix[n][i]
     return sig_res
 
-
-mode = 0
-# 0 для считывания с файла input.txt и вывод в файл output.txt
-# 1 для считывания и вывода в консоль
-
 matrix = []
 bVector = []
-size = matrix_input(matrix, bVector, mode)
+
+size = int(input())
+# Вариант, использующий задание формулой
+# for i in range(size):
+# matrix.append([0] * size)
+#     for j in range(size):
+#         matrix[i][j] = ?
+
+ # Вариант со вводом матриц руками
+for i in range(size):
+    ipt = input()
+    matrix.append(list(map(float, ipt.split()[:-1])))
+    bVector.append(float(ipt.split()[-1]))
 
 lm = [0] * size
 for i in range(size):
@@ -44,9 +49,18 @@ for i in range(1, size):
     for j in range(i + 1, size):
         lm[j][i] = (matrix[j][i] - sigmaJI(i, lm, j)) / lm[i][i]
 
-yVector, _ = gauss_method(size, lm, bVector)
+yVector = [0] * size
+for i in range(size):
+    for j in range(i):
+        bVector[i] -= lm[i][j] * yVector[j]
+    yVector[i] = bVector[i] / lm[i][i]
 transposition(lm)
 
-xVector, _ = gauss_method(size, lm, yVector)
+
+xVector = [0] * size
+for i in reversed(range(size)):
+    for j in reversed(range(i + 1, size)):
+        yVector[i] -= lm[i][j] * xVector[j]
+    xVector[i] = yVector[i] / lm[i][i]
 
 print("\n".join(map(str, xVector)))

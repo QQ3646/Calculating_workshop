@@ -1,5 +1,5 @@
 import math  # Для различных математических констант/простейших функций
-from someStuff.someMethods import matrix_input, gauss_method
+from First_sem.someStuff.someMethods import matrix_input
 
 
 def MatrixMulti(matrix1, matrix2):
@@ -55,8 +55,9 @@ def qralg(matrix, size):
             if not diag:
                 break
             for j in range(i):
-                if abs(matrix[i][j]) > 10e-10:
+                if abs(matrix[i][j]) > 10e-6:
                     diag = False
+                    break
         if diag:
             break
         else:
